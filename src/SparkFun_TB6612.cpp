@@ -21,6 +21,24 @@ Developed with ROB-9457
 #include "SparkFun_TB6612.h"
 #include <Arduino.h>
 
+#ifdef ESP32
+Motor::Motor(int In1pin, int In2pin, int PWMpin, int PWMchannel, int PWMfrequency, int PWMresolution, int offset)
+{
+  In1 = In1pin;
+  In2 = In2pin;
+  PWM = PWMpin;
+  Offset = offset;
+  Channel = PWMchannel;
+  Frequency = PWMfrequency;
+  Resolution = PWMresolution;
+  
+  pinMode(In1, OUTPUT);
+  pinMode(In2, OUTPUT);
+  pinMode(PWM, OUTPUT);
+  ledcSetup(Channel, Frequency, Resolution);
+  ledcAttachPin(PWM, Channel);
+}
+#else
 Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset)
 {
   In1 = In1pin;
@@ -32,6 +50,7 @@ Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset)
   pinMode(In2, OUTPUT);
   pinMode(PWM, OUTPUT);
 }
+#endif
 
 void Motor::drive(int speed)
 {
@@ -49,22 +68,33 @@ void Motor::fwd(int speed)
 {
    digitalWrite(In1, HIGH);
    digitalWrite(In2, LOW);
+   #ifdef ESP32
+   ledcWrite(Channel, speed);
+   #else
    analogWrite(PWM, speed);
-
+   #endif
 }
 
 void Motor::rev(int speed)
 {
    digitalWrite(In1, LOW);
    digitalWrite(In2, HIGH);
+   #ifdef ESP32
+   ledcWrite(Channel, speed);
+   #else
    analogWrite(PWM, speed);
+   #endif
 }
 
 void Motor::brake()
 {
    digitalWrite(In1, HIGH);
    digitalWrite(In2, HIGH);
-   analogWrite(PWM,0);
+   #ifdef ESP32
+   ledcWrite(Channel, 0);
+   #else
+   analogWrite(PWM, 0);
+   #endif
 }
 
 void Motor::changeOffset(int offset) 

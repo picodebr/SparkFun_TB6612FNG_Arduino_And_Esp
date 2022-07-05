@@ -33,8 +33,11 @@ class Motor
 {
   public:
     // Constructor. Mainly sets up pins.
+    #ifdef ESP32
+    Motor(int In1pin, int In2pin, int PWMpin, int PWMchannel, int PWMfrequency, int PWMresolution, int offset);      
+    #elif
     Motor(int In1pin, int In2pin, int PWMpin, int offset);      
-
+    #endif
     // Drive in direction given by sign, at speed given by magnitude of the 
 	//parameter.
     void drive(int speed);  
@@ -53,7 +56,7 @@ class Motor
     void changeOffset(int offset);
   private:
     //variables for the 2 inputs, PWM input and Offset value
-	int In1, In2, PWM, Offset;
+	int In1, In2, PWM, Offset, Channel, Frequency, Resolution;
 	
 	//private functions that spin the motor CC and CCW
 	void fwd(int speed);

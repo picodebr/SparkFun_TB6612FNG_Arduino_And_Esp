@@ -21,23 +21,20 @@ Developed with ROB-9457
 #include "SparkFun_TB6612.h"
 #include <Arduino.h>
 
-Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset, int STBYpin)
+Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset)
 {
   In1 = In1pin;
   In2 = In2pin;
   PWM = PWMpin;
-  Standby = STBYpin;
   Offset = offset;
   
   pinMode(In1, OUTPUT);
   pinMode(In2, OUTPUT);
   pinMode(PWM, OUTPUT);
-  pinMode(Standby, OUTPUT);
 }
 
 void Motor::drive(int speed)
 {
-  digitalWrite(Standby, HIGH);
   speed = speed * Offset;
   if (speed>=0) fwd(speed);
   else rev(-speed);
@@ -68,11 +65,6 @@ void Motor::brake()
    digitalWrite(In1, HIGH);
    digitalWrite(In2, HIGH);
    analogWrite(PWM,0);
-}
-
-void Motor::standby()
-{
-   digitalWrite(Standby, LOW);
 }
 
 void Motor::changeOffset(int offset) 

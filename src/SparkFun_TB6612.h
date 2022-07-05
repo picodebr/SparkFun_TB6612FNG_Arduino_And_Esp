@@ -33,7 +33,7 @@ class Motor
 {
   public:
     // Constructor. Mainly sets up pins.
-    Motor(int In1pin, int In2pin, int PWMpin, int offset, int STBYpin);      
+    Motor(int In1pin, int In2pin, int PWMpin, int offset);      
 
     // Drive in direction given by sign, at speed given by magnitude of the 
 	//parameter.
@@ -49,15 +49,11 @@ class Motor
 	//Stops motor by setting both input pins high
     void brake(); 
 	
-	//set the chip to standby mode.  The drive function takes it out of standby 
-	//(forward, back, left, and right all call drive)
-	void standby();	
-	
     // change the offset of the motor
     void changeOffset(int offset);
   private:
-    //variables for the 2 inputs, PWM input, Offset value, and the Standby pin
-	int In1, In2, PWM, Offset,Standby;
+    //variables for the 2 inputs, PWM input and Offset value
+	int In1, In2, PWM, Offset;
 	
 	//private functions that spin the motor CC and CCW
 	void fwd(int speed);

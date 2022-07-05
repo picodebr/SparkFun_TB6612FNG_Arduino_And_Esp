@@ -53,6 +53,8 @@ class Motor
 	//(forward, back, left, and right all call drive)
 	void standby();	
 	
+    // change the offset of the motor
+    void changeOffset(int offset);
   private:
     //variables for the 2 inputs, PWM input, Offset value, and the Standby pin
 	int In1, In2, PWM, Offset,Standby;

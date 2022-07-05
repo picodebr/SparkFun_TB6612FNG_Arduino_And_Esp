@@ -75,6 +75,11 @@ void Motor::standby()
    digitalWrite(Standby, LOW);
 }
 
+void Motor::changeOffset(int offset) 
+{
+   Offset = offset;
+}
+
 void forward(Motor motor1, Motor motor2, int speed)
 {
 	motor1.drive(speed);
